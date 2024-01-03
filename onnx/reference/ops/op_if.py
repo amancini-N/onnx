@@ -55,13 +55,13 @@ class If(OpRun):
             raise RuntimeError(
                 f"Operator If ({self.onnx_node.name!r}) does not have any output."
             )
-        for i, f in enumerate(final):
-            if f is None:
-                br = self.then_branch if branch == "then" else self.else_branch  # type: ignore
-                names = br.output_names
-                inits = [i.name for i in br.obj.graph.initializer]
-                raise RuntimeError(
-                    f"Output {i!r} (branch={branch!r}, name={names[i]!r}) is None, "
-                    f"available inputs={sorted(context)}, initializers={inits}."
-                )
+        # for i, f in enumerate(final):
+        #     if f is None:
+        #         br = self.then_branch if branch == "then" else self.else_branch  # type: ignore
+        #         names = br.output_names
+        #         inits = [i.name for i in br.obj.graph.initializer]
+        #         raise RuntimeError(
+        #             f"Output {i!r} (branch={branch!r}, name={names[i]!r}) is None, "
+        #             f"available inputs={sorted(context)}, initializers={inits}."
+        #         )
         return self._check_and_fix_outputs(final)

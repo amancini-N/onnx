@@ -6,8 +6,11 @@
 from onnx.reference.op_run import OpRun
 
 
-class SequenceMap(OpRun):
-    def _run(self, input_sequence, *additional_inputs, body=None, attributes=None):  # type: ignore
+class SequenceMap(OpRun):    
+    def need_context(self) -> bool:
+        return True
+
+    def _run(self, input_sequence, *additional_inputs, body=None, attributes=None, context=None):  # type: ignore
         if len(additional_inputs) == 1 and isinstance(additional_inputs[0], list):
             res = None
             for obj1, obj2 in zip(input_sequence, additional_inputs[0]):
@@ -21,6 +24,8 @@ class SequenceMap(OpRun):
             return tuple(res)  # type: ignore
 
         feeds = dict(zip(body.input_names[1:], additional_inputs))
+        if context:
+            feeds.update(context)
         res = None
         for obj in input_sequence:
             feeds[body.input_names[0]] = obj

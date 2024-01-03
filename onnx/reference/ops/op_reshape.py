@@ -16,7 +16,8 @@ def reshape_reference_implementation(
     new_shape = np.copy(shape)
     if allowzero == 0:
         zeros_index = np.where(shape == 0)
-        new_shape[zeros_index] = np.array(data.shape)[zeros_index]
+        zeros_index_on_old = np.where(np.array(data.shape) == 0)
+        new_shape[zeros_index] = np.array(data.shape)[zeros_index_on_old]
     reshaped = np.reshape(data, new_shape)
     return reshaped
 
